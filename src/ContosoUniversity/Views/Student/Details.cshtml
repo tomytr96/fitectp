@@ -54,6 +54,23 @@
                     </tr>
                 }
             </table>
+            @using (Html.BeginForm("Details", "Student", FormMethod.Get))
+            {
+                <p>
+                    Select Department: @Html.DropDownList("SelectedDepartment", "All")
+                    <input type="submit" value="Filter" />
+               
+                </p>
+            }
+            @using (Html.BeginForm("Details","Student", FormMethod.Post))
+            {
+                <p>
+                    Liste Courses: @Html.DropDownList("ListeCourses")
+                    <input type="submit" value="Submit"  />
+
+                </p>
+            }
+
         </dd>
     </dl>
 </div>

@@ -3,6 +3,7 @@ using ContosoUniversity.Models;
 using PagedList;
 using System;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -67,7 +68,7 @@ namespace ContosoUniversity.Controllers
 
 
         // GET: Student/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? SelectedDepartment)
         {
             if (id == null)
             {
@@ -78,8 +79,46 @@ namespace ContosoUniversity.Controllers
             {
                 return HttpNotFound();
             }
+            var departments = db.Departments.OrderBy(q => q.Name).ToList();
+            ViewBag.SelectedDepartment = new SelectList(departments, "DepartmentID", "Name", SelectedDepartment);
+            int departmentID = SelectedDepartment.GetValueOrDefault();
+
+            IQueryable<Course> courses = db.Courses
+                .Where(c => !SelectedDepartment.HasValue || c.DepartmentID == departmentID)
+                .OrderBy(d => d.CourseID)
+                .Include(d => d.Department);
+            var sql = courses.ToString().ToList();
+            ViewData["ListeCourses"]= new SelectList(courses.ToList(), "CourseID", "Title", SelectedDepartment);
+         
+
+
             return View(student);
+
         }
+        [HttpPost]
+        public ActionResult Details(int? id,[Bind(Include = "CourseID,Title,Credits,DepartmentID")] Course ListeCourses)
+        {
+            if (ModelState.IsValid)
+            {
+                Enrollment NouveauCours = new Enrollment();
+                NouveauCours.CourseID = ListeCourses.CourseID;
+                NouveauCours.StudentID = (int)id;
+                NouveauCours.Grade = Grade.A;
+
+                db.Enrollments.Add(NouveauCours);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            Student student = db.Students.Find(id);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+            return View(student);
+
+        }
+
+
 
         // GET: Student/Create
         public ActionResult Create()
