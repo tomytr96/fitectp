@@ -75,51 +75,43 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            TempData["StudentID"] = id;
             Student student = db.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
             }
 
-            //Filtre les cours par départements.
-
-            //var departments = db.Departments.OrderBy(q => q.Name).ToList();
-            //ViewBag.SelectedDepartment = new SelectList(departments, "DepartmentID", "Name", SelectedDepartment);
-            //int departmentID = SelectedDepartment.GetValueOrDefault();
-
-            //IQueryable<Course> courses = db.Courses
-            //    .Where(c => !SelectedDepartment.HasValue || c.DepartmentID == departmentID)
-            //    .OrderBy(d => d.CourseID)
-            //    .Include(d => d.Department);
-            //var sql = courses.ToString();
-            //ViewBag.ListeCourses = new SelectList(courses.ToList(), "CourseID", "Title", SelectedDepartment);
-
-            var courses = db.Courses.OrderBy(c => c.Title).ToList();
-            //ViewBag.ListeCourses = new SelectList(courses.ToList(), "CourseID", "Title");
-
-            TempData["StudentID"] = id;
-
-            TempData["ListeCourses"] = new SelectList(courses.ToList(), "CourseID", "Title");
+            List<Course> listCourses = db.Courses.OrderBy(c=>c.Title).ToList();
+            ViewBag.listCourses = listCourses;
 
             return View(student);
 
         }
         [HttpPost]
-        public ActionResult Details(String ListeCourses)
+        public ActionResult Details(String listCourses)
         {
             if (ModelState.IsValid)
             {
+                int studentID = int.Parse(TempData["StudentID"].ToString());
+                int courseID = int.Parse(listCourses);
 
-                Enrollment nouveauCours = new Enrollment
+                if (!(db.Enrollments.Where(o => o.Student.ID == studentID && o.CourseID == courseID).Any()))
                 {
-                    CourseID = int.Parse(ListeCourses),
-                    StudentID = int.Parse(TempData["StudentID"].ToString())
-                };
-
-                db.Enrollments.Add(nouveauCours);
-                db.SaveChanges();
-
-                return RedirectToAction("Details", new { id = TempData["StudentID"] });
+                    Enrollment nouveauCours = new Enrollment
+                    {
+                        CourseID = int.Parse(listCourses),
+                        StudentID = int.Parse(TempData["StudentID"].ToString())
+                    };
+                    db.Enrollments.Add(nouveauCours);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = TempData["StudentID"] });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You're already subscribed to this lesson";
+                    return RedirectToAction("Details", new { id = TempData["StudentID"] });
+                }
             }
 
             else

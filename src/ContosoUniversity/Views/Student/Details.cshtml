@@ -67,9 +67,10 @@
             @using (Html.BeginForm("Details", "Student", FormMethod.Post))
             {
                 <p>
-                    Course : @Html.DropDownList("ListeCourses", (IEnumerable<SelectListItem>)TempData["ListeCourses"], new { name = "CourseSelected" })
+                    Course : @Html.DropDownList("listCourses", new SelectList(ViewBag.ListCourses, "CourseID","Title"))
                     <input type="submit" value="Register" />
                 </p>
+                <p class="text-danger">@TempData["ErrorMessage"]</p>
             }
 
 
