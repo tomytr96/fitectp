@@ -37,7 +37,7 @@ namespace ContosoUniversity.Controllers
                 ModelState.Clear();
                 ViewBag.Message = account.FirstName + " " + account.LastName + "successfully registered";
             }
-            return View();
+            return RedirectToAction("Index");
         }
         //Login
         public ActionResult Login()
@@ -61,7 +61,7 @@ namespace ContosoUniversity.Controllers
                 {
                     Session["UserID"] = usr.UserID.ToString();
                     Session["Username"] = usr.Username.ToString();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("LoggedIn");
                 }
                 else
                 {

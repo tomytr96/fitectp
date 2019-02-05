@@ -34,8 +34,9 @@ namespace ContosoUniversity.Tests.Controllers
 
             EntityGenerator generator = new EntityGenerator(dbContext);
             Student student = generator.CreateStudent(expectedLastName, expectedFirstName);
+            //SECOND PARAMETRE A REMPLACER
+            var result = controllerToTest.Details(student.ID, 1) as ViewResult;
 
-            var result = controllerToTest.Details(student.ID) as ViewResult;
             var resultModel = result.Model as Student;
 
             Assert.That(result, Is.Not.Null);
@@ -49,8 +50,8 @@ namespace ContosoUniversity.Tests.Controllers
         {
             const int expectedStatusCode = 404;
             const int invalidId = 99999999;
-
-            var result = controllerToTest.Details(invalidId) as HttpStatusCodeResult;
+            //SECOND PARAMETRE A REMPLACER
+            var result = controllerToTest.Details(invalidId,1) as HttpStatusCodeResult;
 
             Assert.That(result, Is.Not.Null);
             Assert.That(expectedStatusCode, Is.EqualTo(result.StatusCode));

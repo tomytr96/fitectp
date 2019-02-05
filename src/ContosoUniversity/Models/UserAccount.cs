@@ -14,6 +14,8 @@ namespace ContosoUniversity.Models
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Last Nameis Required")]
         public string LastName { get; set; }
+        [Required(ErrorMessage = "Role is Required")]
+        public string Role { get; set; }
         [Required(ErrorMessage = "Email Address is required!")]
         [RegularExpression("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$", ErrorMessage = "Invalid Email Address.")]
         public string Email { get; set; }
