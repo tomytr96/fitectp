@@ -19,7 +19,7 @@ namespace ContosoUniversity.Controllers
         // GET: Course
         public ActionResult Index(int? SelectedDepartment)
         {
-            var departments = db.Departments.OrderBy(q => q.Name).ToList();
+            var departments = db.Departments.OrderBy(d => d.Name).ToList();
             ViewBag.SelectedDepartment = new SelectList(departments, "DepartmentID", "Name", SelectedDepartment);
             int departmentID = SelectedDepartment.GetValueOrDefault();
 

@@ -2,6 +2,7 @@
 using ContosoUniversity.Models;
 using PagedList;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -68,7 +69,7 @@ namespace ContosoUniversity.Controllers
 
 
         // GET: Student/Details/5
-        public ActionResult Details(int? id, int? SelectedDepartment)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -79,43 +80,57 @@ namespace ContosoUniversity.Controllers
             {
                 return HttpNotFound();
             }
-            var departments = db.Departments.OrderBy(q => q.Name).ToList();
-            ViewBag.SelectedDepartment = new SelectList(departments, "DepartmentID", "Name", SelectedDepartment);
-            int departmentID = SelectedDepartment.GetValueOrDefault();
 
-            IQueryable<Course> courses = db.Courses
-                .Where(c => !SelectedDepartment.HasValue || c.DepartmentID == departmentID)
-                .OrderBy(d => d.CourseID)
-                .Include(d => d.Department);
-            var sql = courses.ToString().ToList();
-            ViewData["ListeCourses"]= new SelectList(courses.ToList(), "CourseID", "Title", SelectedDepartment);
-         
+            //Filtre les cours par départements.
 
+            //var departments = db.Departments.OrderBy(q => q.Name).ToList();
+            //ViewBag.SelectedDepartment = new SelectList(departments, "DepartmentID", "Name", SelectedDepartment);
+            //int departmentID = SelectedDepartment.GetValueOrDefault();
+
+            //IQueryable<Course> courses = db.Courses
+            //    .Where(c => !SelectedDepartment.HasValue || c.DepartmentID == departmentID)
+            //    .OrderBy(d => d.CourseID)
+            //    .Include(d => d.Department);
+            //var sql = courses.ToString();
+            //ViewBag.ListeCourses = new SelectList(courses.ToList(), "CourseID", "Title", SelectedDepartment);
+
+            var courses = db.Courses.OrderBy(c => c.Title).ToList();
+            //ViewBag.ListeCourses = new SelectList(courses.ToList(), "CourseID", "Title");
+
+            TempData["StudentID"] = id;
+
+            TempData["ListeCourses"] = new SelectList(courses.ToList(), "CourseID", "Title");
 
             return View(student);
 
         }
         [HttpPost]
-        public ActionResult Details(int? id,[Bind(Include = "CourseID,Title,Credits,DepartmentID")] Course ListeCourses)
+        public ActionResult Details(String ListeCourses)
         {
             if (ModelState.IsValid)
             {
-                Enrollment NouveauCours = new Enrollment();
-                NouveauCours.CourseID = ListeCourses.CourseID;
-                NouveauCours.StudentID = (int)id;
-                NouveauCours.Grade = Grade.A;
 
-                db.Enrollments.Add(NouveauCours);
+                Enrollment nouveauCours = new Enrollment
+                {
+                    CourseID = int.Parse(ListeCourses),
+                    StudentID = int.Parse(TempData["StudentID"].ToString())
+                };
+
+                db.Enrollments.Add(nouveauCours);
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            Student student = db.Students.Find(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            return View(student);
 
+                return RedirectToAction("Details", new { id = TempData["StudentID"] });
+            }
+
+            else
+            {
+                Student student = db.Students.Find(TempData["StudentID"]);
+                if (student == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(student);
+            }
         }
 
 
