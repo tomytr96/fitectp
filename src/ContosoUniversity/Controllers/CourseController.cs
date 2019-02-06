@@ -12,17 +12,21 @@ using System.Data.Entity.Infrastructure;
 
 namespace ContosoUniversity.Controllers
 {
-  
+
     public class CourseController : Controller
     {
         private SchoolContext db = new SchoolContext();
 
         // GET: Course
-   
+
         public ActionResult Index(int? SelectedDepartment)
         {
-           
-            var departments = db.Departments.OrderBy(q => q.Name).ToList();
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
+            var departments = db.Departments.OrderBy(d => d.Name).ToList();
             ViewBag.SelectedDepartment = new SelectList(departments, "DepartmentID", "Name", SelectedDepartment);
             int departmentID = SelectedDepartment.GetValueOrDefault();
 
@@ -37,6 +41,11 @@ namespace ContosoUniversity.Controllers
         // GET: Course/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -51,7 +60,13 @@ namespace ContosoUniversity.Controllers
 
 
         public ActionResult Create()
+
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             PopulateDepartmentsDropDownList();
             return View();
         }
@@ -80,6 +95,11 @@ namespace ContosoUniversity.Controllers
 
         public ActionResult Edit(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -133,6 +153,11 @@ namespace ContosoUniversity.Controllers
         // GET: Course/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

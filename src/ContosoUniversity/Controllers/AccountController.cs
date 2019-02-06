@@ -9,13 +9,13 @@ using System.Web.Security;
 
 namespace ContosoUniversity.Controllers
 {
-    
+
     public class AccountController : Controller
     {
         // GET: Account
         public ActionResult Index()
         {
-            
+
             return View();
 
         }
@@ -80,7 +80,7 @@ namespace ContosoUniversity.Controllers
             return View();
         }
         //Login
-      
+
         public ActionResult Login()
         {
             return View();
@@ -120,15 +120,15 @@ namespace ContosoUniversity.Controllers
             return View();
 
         }
-  
+
         public ActionResult Logout()
         {
-            if (Session["UserID"] != null)
-            {
-                
-                FormsAuthentication.SignOut();
-            }
+            //if (Session["UserID"] != null)
+            //{
 
+            //    FormsAuthentication.SignOut();
+            //}
+            Session["UserID"] = null;
 
             return RedirectToAction("Index", "Home");
         }

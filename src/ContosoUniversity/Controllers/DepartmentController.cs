@@ -21,7 +21,11 @@ namespace ContosoUniversity.Controllers
         // GET: Department
         public async Task<ActionResult> Index()
         {
-            
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             var departments = db.Departments.Include(d => d.Administrator);
             return View(await departments.ToListAsync());
         }
@@ -29,6 +33,11 @@ namespace ContosoUniversity.Controllers
         // GET: Department/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -51,6 +60,11 @@ namespace ContosoUniversity.Controllers
         // GET: Department/Create
         public ActionResult Create()
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             ViewBag.InstructorID = new SelectList(db.Instructors, "ID", "FullName");
             return View();
         }
@@ -76,6 +90,11 @@ namespace ContosoUniversity.Controllers
         // GET: Department/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -170,6 +189,11 @@ namespace ContosoUniversity.Controllers
         // GET: Department/Delete/5
         public async Task<ActionResult> Delete(int? id, bool? concurrencyError)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
