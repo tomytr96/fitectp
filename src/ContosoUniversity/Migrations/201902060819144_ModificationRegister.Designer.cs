@@ -7,13 +7,13 @@ namespace ContosoUniversity.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AjoutdeRole : IMigrationMetadata
+    public sealed partial class ModificationRegister : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AjoutdeRole));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ModificationRegister));
         
         string IMigrationMetadata.Id
         {
-            get { return "201902050907254_AjoutdeRole"; }
+            get { return "201902060819144_ModificationRegister"; }
         }
         
         string IMigrationMetadata.Source
