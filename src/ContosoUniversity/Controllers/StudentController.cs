@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
-    
+
     public class StudentController : Controller
     {
         private SchoolContext db = new SchoolContext();
@@ -23,11 +23,15 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Student
-        
-        public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
-        {
-           
 
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
@@ -75,6 +79,11 @@ namespace ContosoUniversity.Controllers
         // GET: Student/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -86,8 +95,14 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            List<Course> listCourses = db.Courses.OrderBy(c=>c.Title).ToList();
-            ViewBag.listCourses = listCourses;
+            IQueryable<Course> courses = db.Courses
+                .Where(c => !SelectedDepartment.HasValue || c.DepartmentID == departmentID)
+                .OrderBy(d => d.CourseID)
+                .Include(d => d.Department);
+            var sql = courses.ToString().ToList();
+            ViewData["ListeCourses"]= new SelectList(courses.ToList(), "CourseID", "Title", SelectedDepartment);
+         
+
 
             return View(student);
 
@@ -95,6 +110,11 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         public ActionResult Details(String listCourses)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (ModelState.IsValid)
             {
                 int studentID = int.Parse(TempData["StudentID"].ToString());
@@ -165,6 +185,11 @@ namespace ContosoUniversity.Controllers
         // GET: Student/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -184,6 +209,11 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditPost(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -209,7 +239,11 @@ namespace ContosoUniversity.Controllers
 
         // GET: Student/Delete/5
         public ActionResult Delete(int? id, bool? saveChangesError = false)
-        {
+        { if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

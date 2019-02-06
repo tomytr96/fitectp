@@ -20,7 +20,12 @@ namespace ContosoUniversity.Controllers
 
         // GET: Instructor
         public ActionResult Index(int? id, int? courseID)
-        { 
+        {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             var viewModel = new InstructorIndexData();
 
             viewModel.Instructors = db.Instructors
@@ -59,6 +64,11 @@ namespace ContosoUniversity.Controllers
         // GET: Instructor/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -73,6 +83,11 @@ namespace ContosoUniversity.Controllers
 
         public ActionResult Create()
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             var instructor = new Instructor();
             instructor.Courses = new List<Course>();
             PopulateAssignedCourseData(instructor);
@@ -106,6 +121,11 @@ namespace ContosoUniversity.Controllers
         // GET: Instructor/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -146,6 +166,7 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int? id, string[] selectedCourses)
         {
+           
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -216,6 +237,11 @@ namespace ContosoUniversity.Controllers
         // GET: Instructor/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UserID"] == null)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
