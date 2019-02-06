@@ -9,10 +9,11 @@ using ContosoUniversity.ViewModels;
 
 namespace ContosoUniversity.Controllers
 {
+  
     public class HomeController : Controller
     {
         private SchoolContext db = new SchoolContext();
-
+     
         public ActionResult Index()
         {
             

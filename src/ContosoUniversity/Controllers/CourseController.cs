@@ -12,13 +12,16 @@ using System.Data.Entity.Infrastructure;
 
 namespace ContosoUniversity.Controllers
 {
+  
     public class CourseController : Controller
     {
         private SchoolContext db = new SchoolContext();
 
         // GET: Course
+   
         public ActionResult Index(int? SelectedDepartment)
         {
+           
             var departments = db.Departments.OrderBy(q => q.Name).ToList();
             ViewBag.SelectedDepartment = new SelectList(departments, "DepartmentID", "Name", SelectedDepartment);
             int departmentID = SelectedDepartment.GetValueOrDefault();

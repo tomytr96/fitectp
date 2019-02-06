@@ -9,15 +9,13 @@ using System.Web.Security;
 
 namespace ContosoUniversity.Controllers
 {
+    
     public class AccountController : Controller
     {
         // GET: Account
         public ActionResult Index()
         {
-            //using (SchoolContext db = new SchoolContext())
-            //{
-            //    return View(db.People.ToList());
-            //}
+            
             return View();
 
         }
@@ -32,7 +30,7 @@ namespace ContosoUniversity.Controllers
             //if (ModelState.IsValid)
             if (Password == ConfirmPassword)
             {
-               
+
                 using (SchoolContext db = new SchoolContext())
                 {
 
@@ -70,89 +68,73 @@ namespace ContosoUniversity.Controllers
                         TempData["ErrorMessage"] = "Username already exists";
                         return View();
                     }
-                
 
+
+
+
+                }
 
 
             }
-            // ModelState.Clear();
-
-        }
             TempData["ErrorMessage"] = "Password Not Valid";
             return View();
-    }
-    //Login
-    public ActionResult Login()
-    {
-        return View();
-
-    }
-    //public ActionResult Login()
-    //{
-    //    Student student = new Student();
-    //    Session["ID"] = student.ID.ToString();
-    //    return View("Login");
-    //}
-    [HttpPost]
-    public ActionResult Login(string username, string password) // TOMY - TODO : Ici ça serait bien de mettre un ViewModel ...
-    {
-        using (SchoolContext db = new SchoolContext())
-        {
-            if (db.People.FirstOrDefault(u => u.Username == username && u.Password == password) is Student)
-
-            {
-                Student user = new Student();
-                user.Username = username;
-                user.Password = password;
-                Session["Student"] = user;
-                TempData["LoginMessage"] = "Welcome " + username;
-                return RedirectToAction("Index", "Student");
-            }
-            else if (db.People.FirstOrDefault(u => u.Username == username && u.Password == password) is Instructor)
-            {
-                Instructor user = new Instructor();
-                user.Username = username;
-                user.Password = password;
-                Session["Instructor"] = user;
-                TempData["LoginMessage"] = "Welcome " + username;
-                return RedirectToAction("Index", "Instructor");
-
-            }
-            else { ModelState.AddModelError("", "Username or Password is wrong"); }
-
-            //Session["ID"]
-
         }
-        return View();
-
-    }
-    public ActionResult LoggedIn()
-    {
-        if (Session["UserID"] != null)
+        //Login
+      
+        public ActionResult Login()
         {
             return View();
+
         }
-        else
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult Login(string username, string password) //TODO : Ici ça serait bien de mettre un ViewModel ...
         {
-            return RedirectToAction("Login");
+            using (SchoolContext db = new SchoolContext())
+            {
+                if (db.People.FirstOrDefault(u => u.Username == username && u.Password == password) is Student)
+
+                {
+                    Student user = new Student();
+                    user.Username = username;
+                    user.Password = password;
+                    Session["UserID"] = user;
+                    TempData["LoginMessage"] = "Welcome " + username;
+                    return RedirectToAction("Index", "Student");
+                }
+                else if (db.People.FirstOrDefault(u => u.Username == username && u.Password == password) is Instructor)
+                {
+                    Instructor user = new Instructor();
+                    user.Username = username;
+                    user.Password = password;
+                    Session["UserID"] = user;
+                    TempData["LoginMessage"] = "Welcome " + username;
+                    return RedirectToAction("Index", "Instructor");
+
+                }
+                else { ModelState.AddModelError("", "Username or Password is wrong"); }
+
+
+
+            }
+            return View();
+
         }
-    }
-
-
-    public ActionResult Logout()
-    {
-        if (User.Identity.IsAuthenticated)
+  
+        public ActionResult Logout()
         {
-            TempData["LogoutMessage"] = "You are now successful loged out.";
-            FormsAuthentication.SignOut();
+            if (Session["UserID"] != null)
+            {
+                
+                FormsAuthentication.SignOut();
+            }
+
+
+            return RedirectToAction("Index", "Home");
         }
 
 
-        return View("Index");
     }
-
-
-}
 
 }
 

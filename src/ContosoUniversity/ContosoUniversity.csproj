@@ -188,6 +188,10 @@
     <Compile Include="Migrations\201902061127114_ModificationControlleur.Designer.cs">
       <DependentUpon>201902061127114_ModificationControlleur.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902061426471_suppressiondescommentaire.cs" />
+    <Compile Include="Migrations\201902061426471_suppressiondescommentaire.Designer.cs">
+      <DependentUpon>201902061426471_suppressiondescommentaire.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
@@ -267,7 +271,6 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\LoggedIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -306,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902061127114_ModificationControlleur.resx">
       <DependentUpon>201902061127114_ModificationControlleur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902061426471_suppressiondescommentaire.resx">
+      <DependentUpon>201902061426471_suppressiondescommentaire.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

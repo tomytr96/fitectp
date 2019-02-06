@@ -13,6 +13,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace ContosoUniversity.Controllers
 {
+   
     public class DepartmentController : Controller
     {
         private SchoolContext db = new SchoolContext();
@@ -20,6 +21,7 @@ namespace ContosoUniversity.Controllers
         // GET: Department
         public async Task<ActionResult> Index()
         {
+            
             var departments = db.Departments.Include(d => d.Administrator);
             return View(await departments.ToListAsync());
         }
