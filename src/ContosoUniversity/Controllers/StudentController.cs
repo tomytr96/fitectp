@@ -2,6 +2,7 @@
 using ContosoUniversity.Models;
 using PagedList;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -72,54 +73,60 @@ namespace ContosoUniversity.Controllers
 
 
         // GET: Student/Details/5
-        public ActionResult Details(int? id, int? SelectedDepartment)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            TempData["StudentID"] = id;
             Student student = db.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
             }
-            var departments = db.Departments.OrderBy(q => q.Name).ToList();
-            ViewBag.SelectedDepartment = new SelectList(departments, "DepartmentID", "Name", SelectedDepartment);
-            int departmentID = SelectedDepartment.GetValueOrDefault();
 
-            IQueryable<Course> courses = db.Courses
-                .Where(c => !SelectedDepartment.HasValue || c.DepartmentID == departmentID)
-                .OrderBy(d => d.CourseID)
-                .Include(d => d.Department);
-            var sql = courses.ToString().ToList();
-            ViewData["ListeCourses"]= new SelectList(courses.ToList(), "CourseID", "Title", SelectedDepartment);
-         
-
+            List<Course> listCourses = db.Courses.OrderBy(c=>c.Title).ToList();
+            ViewBag.listCourses = listCourses;
 
             return View(student);
 
         }
         [HttpPost]
-        public ActionResult Details(int? id,[Bind(Include = "CourseID,Title,Credits,DepartmentID")] Course ListeCourses)
+        public ActionResult Details(String listCourses)
         {
             if (ModelState.IsValid)
             {
-                Enrollment NouveauCours = new Enrollment();
-                NouveauCours.CourseID = ListeCourses.CourseID;
-                NouveauCours.StudentID = (int)id;
-                NouveauCours.Grade = Grade.A;
+                int studentID = int.Parse(TempData["StudentID"].ToString());
+                int courseID = int.Parse(listCourses);
 
-                db.Enrollments.Add(NouveauCours);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (!(db.Enrollments.Where(o => o.Student.ID == studentID && o.CourseID == courseID).Any()))
+                {
+                    Enrollment nouveauCours = new Enrollment
+                    {
+                        CourseID = int.Parse(listCourses),
+                        StudentID = int.Parse(TempData["StudentID"].ToString())
+                    };
+                    db.Enrollments.Add(nouveauCours);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = TempData["StudentID"] });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You're already subscribed to this lesson";
+                    return RedirectToAction("Details", new { id = TempData["StudentID"] });
+                }
             }
-            Student student = db.Students.Find(id);
-            if (student == null)
+
+            else
             {
-                return HttpNotFound();
+                Student student = db.Students.Find(TempData["StudentID"]);
+                if (student == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(student);
             }
-            return View(student);
-
         }
 
 

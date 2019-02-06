@@ -54,22 +54,25 @@
                     </tr>
                 }
             </table>
-            @using (Html.BeginForm("Details", "Student", FormMethod.Get))
+            <p>Register to a new course : </p>
+            @*@using (Html.BeginForm("Details","Student", FormMethod.Get))
             {
-                <p>
-                    Select Department: @Html.DropDownList("SelectedDepartment", "All")
-                    <input type="submit" value="Filter" />
-               
-                </p>
-            }
-            @using (Html.BeginForm("Details","Student", FormMethod.Post))
-            {
-                <p>
-                    Liste Courses: @Html.DropDownList("ListeCourses")
-                    <input type="submit" value="Submit"  />
+            <p>
+                Department : @Html.DropDownList("SelectedDepartment", (IEnumerable<SelectListItem>)ViewBag.SelectedDepartment)
+                <input type="submit" value="Filter" />
+            </p>
+            <br />
+            }*@
 
+            @using (Html.BeginForm("Details", "Student", FormMethod.Post))
+            {
+                <p>
+                    Course : @Html.DropDownList("listCourses", new SelectList(ViewBag.ListCourses, "CourseID","Title"))
+                    <input type="submit" value="Register" />
                 </p>
+                <p class="text-danger">@TempData["ErrorMessage"]</p>
             }
+
 
         </dd>
     </dl>
