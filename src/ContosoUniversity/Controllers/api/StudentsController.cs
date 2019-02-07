@@ -43,10 +43,12 @@ namespace ContosoUniversity.Controllers.api
             DetailsStudent.Add("enrollementDate", student.EnrollmentDate);
             DetailsStudent.Add("enrollements",CoursIDList);
 
-            foreach( var item in student.Enrollments)
+           
+            foreach ( var item in student.Enrollments)
             {
                
-                CoursIDList.Add(item.CourseID.ToString());
+                CoursIDList.Add("CoursID: "+item.CourseID.ToString());
+               
             }
 
             return Ok(DetailsStudent);
@@ -54,12 +56,6 @@ namespace ContosoUniversity.Controllers.api
 
 
         }
-
-
-    
-        
-
-
 
         protected override void Dispose(bool disposing)
         {

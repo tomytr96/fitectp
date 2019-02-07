@@ -94,7 +94,8 @@ namespace ContosoUniversity.Controllers
             {
                 return HttpNotFound();
             }
-
+            List<Course> listCourses = db.Courses.OrderBy(c => c.Title).ToList();
+            ViewBag.listCourses = listCourses;
             return View(student);
 
         }
