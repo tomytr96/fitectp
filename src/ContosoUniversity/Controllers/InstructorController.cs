@@ -57,17 +57,25 @@ namespace ContosoUniversity.Controllers
 
 
         // GET: Instructor/Details/5
-        public ActionResult Details(int? id)
+        [HttpGet]
+        public ActionResult Details(InstructorVM model)
         {
-            if (id == null)
+            if (model.ID == 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(model);
             }
-            Instructor instructor = db.Instructors.Find(id);
+            Instructor instructor = db.Instructors.Find(model.ID);
             if (instructor == null)
             {
                 return HttpNotFound();
             }
+
+            model.HireDate = db.Instructors.Where(e => e.ID == model.ID).Select(e => e.HireDate).FirstOrDefault();
+            model.FirstMidName = db.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
+            model.LastName = db.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
+            model.ImagePath = db.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
+            model.OfficeAssignment = db.Instructors.Where(e => e.ID == model.ID).Select(e => e.OfficeAssignment).FirstOrDefault();
+
             return View(instructor);
         }
 

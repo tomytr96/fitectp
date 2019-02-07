@@ -31,11 +31,11 @@ namespace ContosoUniversity.Controllers
         {
             if (model.Password == model.ConfirmPassword)
             {
-                string fileName = model.FullName;
+                string fileName = model.FirstMidName + model.LastName.ToUpper();
                 string extension = Path.GetExtension(model.ImageFile.FileName);
                 fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                model.ImagePath = "~/Image/" + fileName;
-                fileName = Path.Combine(Server.MapPath("~/Image/"), fileName);
+                model.ImagePath = "/Image/" + fileName;
+                fileName = Path.Combine(Server.MapPath("/Image/"), fileName);
                 model.ImageFile.SaveAs(fileName);
                 using (SchoolContext db = new SchoolContext())
                 {
@@ -66,7 +66,8 @@ namespace ContosoUniversity.Controllers
                                 LastName = model.LastName,
                                 Username = model.Username,
                                 Password = model.Password,
-                                HireDate = DateTime.Now
+                                HireDate = DateTime.Now,
+                                ImagePath = model.ImagePath
                             };
                             db.Instructors.Add(user);
                             db.SaveChanges();

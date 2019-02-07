@@ -1,5 +1,6 @@
 ﻿using ContosoUniversity.DAL;
 using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -73,23 +74,29 @@ namespace ContosoUniversity.Controllers
 
 
         // GET: Student/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(StudentVM model)
         {
-            if (id == null)
+            if (model.ID == 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(model);
             }
-            TempData["StudentID"] = id;
-            Student student = db.Students.Find(id);
+            TempData["StudentID"] = model.ID;
+            Student student = db.Students.Find(model.ID);
             if (student == null)
             {
                 return HttpNotFound();
             }
 
-            List<Course> listCourses = db.Courses.OrderBy(c=>c.Title).ToList();
+            List<Course> listCourses = db.Courses.OrderBy(c => c.Title).ToList();
             ViewBag.listCourses = listCourses;
 
-            return View(student);
+            model.EnrollmentDate = db.Students.Where(e => e.ID == model.ID).Select(e => e.EnrollmentDate).FirstOrDefault();
+            model.FirstMidName = db.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
+            model.LastName = db.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
+            model.ImagePath = db.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
+            model.Enrollments = db.Enrollments.Where(e => e.StudentID == model.ID).OrderBy(e => e.Course.Title).ToList();
+
+            return View(model);
 
         }
         [HttpPost]
