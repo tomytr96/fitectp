@@ -197,6 +197,10 @@
     <Compile Include="Migrations\201902061426471_suppressiondescommentaire.Designer.cs">
       <DependentUpon>201902061426471_suppressiondescommentaire.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902071344213_AjoutdeAPIEtudient.cs" />
+    <Compile Include="Migrations\201902071344213_AjoutdeAPIEtudient.Designer.cs">
+      <DependentUpon>201902071344213_AjoutdeAPIEtudient.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
@@ -316,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902061426471_suppressiondescommentaire.resx">
       <DependentUpon>201902061426471_suppressiondescommentaire.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902071344213_AjoutdeAPIEtudient.resx">
+      <DependentUpon>201902071344213_AjoutdeAPIEtudient.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
