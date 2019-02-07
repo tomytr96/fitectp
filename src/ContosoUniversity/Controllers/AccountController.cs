@@ -21,7 +21,7 @@ namespace ContosoUniversity.Controllers
         }
         public ActionResult Register()
         {
-            TempData["ErrorMessage"] = "";
+            
             return View();
         }
         [HttpPost]
@@ -65,18 +65,15 @@ namespace ContosoUniversity.Controllers
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Username already exists";
+                        TempData["UsernameMessage"] = "Username already exists";
                         return View();
                     }
-
-
-
 
                 }
 
 
             }
-            TempData["ErrorMessage"] = "Password Not Valid";
+            TempData["PasswordMessage"] = "Password Not Conform";
             return View();
         }
         //Login
@@ -112,7 +109,7 @@ namespace ContosoUniversity.Controllers
                     return RedirectToAction("Index", "Instructor");
 
                 }
-                else { ModelState.AddModelError("", "Username or Password is wrong"); }
+                else { TempData["ErrorLoginMessage"]="Username or Password is wrong"; }
 
 
 

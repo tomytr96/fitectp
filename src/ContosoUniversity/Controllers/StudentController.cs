@@ -95,15 +95,6 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            IQueryable<Course> courses = db.Courses
-                .Where(c => !SelectedDepartment.HasValue || c.DepartmentID == departmentID)
-                .OrderBy(d => d.CourseID)
-                .Include(d => d.Department);
-            var sql = courses.ToString().ToList();
-            ViewData["ListeCourses"]= new SelectList(courses.ToList(), "CourseID", "Title", SelectedDepartment);
-         
-
-
             return View(student);
 
         }
