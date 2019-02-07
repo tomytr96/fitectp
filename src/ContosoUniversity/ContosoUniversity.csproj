@@ -166,25 +166,9 @@
     <Compile Include="Migrations\201411022351064_Inheritance.Designer.cs">
       <DependentUpon>201411022351064_Inheritance.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201902041424407_ModificationClassePersonne.cs" />
-    <Compile Include="Migrations\201902041424407_ModificationClassePersonne.Designer.cs">
-      <DependentUpon>201902041424407_ModificationClassePersonne.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902060819144_ModificationRegister.cs" />
-    <Compile Include="Migrations\201902060819144_ModificationRegister.Designer.cs">
-      <DependentUpon>201902060819144_ModificationRegister.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902060928203_EmailnotRequired.cs" />
-    <Compile Include="Migrations\201902060928203_EmailnotRequired.Designer.cs">
-      <DependentUpon>201902060928203_EmailnotRequired.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902061127114_ModificationControlleur.cs" />
-    <Compile Include="Migrations\201902061127114_ModificationControlleur.Designer.cs">
-      <DependentUpon>201902061127114_ModificationControlleur.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902061551295_AjoutViewModelPerson.cs" />
-    <Compile Include="Migrations\201902061551295_AjoutViewModelPerson.Designer.cs">
-      <DependentUpon>201902061551295_AjoutViewModelPerson.cs</DependentUpon>
+    <Compile Include="Migrations\201902071714167_initial.cs" />
+    <Compile Include="Migrations\201902071714167_initial.Designer.cs">
+      <DependentUpon>201902071714167_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
@@ -194,7 +178,6 @@
     <Compile Include="Models\OfficeAssignment.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Student.cs" />
-    <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssignedCourseData.cs" />
     <Compile Include="ViewModels\EnrollmentDateGroup.cs" />
@@ -230,7 +213,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -298,20 +283,8 @@
     <EmbeddedResource Include="Migrations\201411022351064_Inheritance.resx">
       <DependentUpon>201411022351064_Inheritance.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902041424407_ModificationClassePersonne.resx">
-      <DependentUpon>201902041424407_ModificationClassePersonne.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902060819144_ModificationRegister.resx">
-      <DependentUpon>201902060819144_ModificationRegister.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902060928203_EmailnotRequired.resx">
-      <DependentUpon>201902060928203_EmailnotRequired.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902061127114_ModificationControlleur.resx">
-      <DependentUpon>201902061127114_ModificationControlleur.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902061551295_AjoutViewModelPerson.resx">
-      <DependentUpon>201902061551295_AjoutViewModelPerson.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902071714167_initial.resx">
+      <DependentUpon>201902071714167_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
