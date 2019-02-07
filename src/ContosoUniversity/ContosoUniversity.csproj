@@ -177,33 +177,9 @@
     <Compile Include="Migrations\201411022351064_Inheritance.Designer.cs">
       <DependentUpon>201411022351064_Inheritance.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201902041424407_ModificationClassePersonne.cs" />
-    <Compile Include="Migrations\201902041424407_ModificationClassePersonne.Designer.cs">
-      <DependentUpon>201902041424407_ModificationClassePersonne.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902060819144_ModificationRegister.cs" />
-    <Compile Include="Migrations\201902060819144_ModificationRegister.Designer.cs">
-      <DependentUpon>201902060819144_ModificationRegister.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902060928203_EmailnotRequired.cs" />
-    <Compile Include="Migrations\201902060928203_EmailnotRequired.Designer.cs">
-      <DependentUpon>201902060928203_EmailnotRequired.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902061127114_ModificationControlleur.cs" />
-    <Compile Include="Migrations\201902061127114_ModificationControlleur.Designer.cs">
-      <DependentUpon>201902061127114_ModificationControlleur.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902061551295_AjoutViewModelPerson.cs" />
-    <Compile Include="Migrations\201902061551295_AjoutViewModelPerson.Designer.cs">
-      <DependentUpon>201902061551295_AjoutViewModelPerson.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902071344213_AjoutdeAPIEtudient.cs" />
-    <Compile Include="Migrations\201902071344213_AjoutdeAPIEtudient.Designer.cs">
-      <DependentUpon>201902071344213_AjoutdeAPIEtudient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902071524198_FusionUS3-US6.cs" />
-    <Compile Include="Migrations\201902071524198_FusionUS3-US6.Designer.cs">
-      <DependentUpon>201902071524198_FusionUS3-US6.cs</DependentUpon>
+    <Compile Include="Migrations\201902071632009_initial.cs" />
+    <Compile Include="Migrations\201902071632009_initial.Designer.cs">
+      <DependentUpon>201902071632009_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
@@ -316,26 +292,8 @@
     <EmbeddedResource Include="Migrations\201411022351064_Inheritance.resx">
       <DependentUpon>201411022351064_Inheritance.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902041424407_ModificationClassePersonne.resx">
-      <DependentUpon>201902041424407_ModificationClassePersonne.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902060819144_ModificationRegister.resx">
-      <DependentUpon>201902060819144_ModificationRegister.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902060928203_EmailnotRequired.resx">
-      <DependentUpon>201902060928203_EmailnotRequired.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902061127114_ModificationControlleur.resx">
-      <DependentUpon>201902061127114_ModificationControlleur.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902061551295_AjoutViewModelPerson.resx">
-      <DependentUpon>201902061551295_AjoutViewModelPerson.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902071344213_AjoutdeAPIEtudient.resx">
-      <DependentUpon>201902071344213_AjoutdeAPIEtudient.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902071524198_FusionUS3-US6.resx">
-      <DependentUpon>201902071524198_FusionUS3-US6.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902071632009_initial.resx">
+      <DependentUpon>201902071632009_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
