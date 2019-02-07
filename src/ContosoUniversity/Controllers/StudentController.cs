@@ -1,5 +1,6 @@
 ﻿using ContosoUniversity.DAL;
 using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
-
+    
     public class StudentController : Controller
     {
         private SchoolContext db = new SchoolContext();
@@ -24,7 +25,7 @@ namespace ContosoUniversity.Controllers
 
         // GET: Student
 
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)//TODO : Remplacer les paramètres par un ViewModel
         {
 
             if (Session["UserID"] == null)
@@ -77,26 +78,33 @@ namespace ContosoUniversity.Controllers
 
 
         // GET: Student/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(StudentVM model)
         {
             if (Session["UserID"] == null)
             {
 
                 return RedirectToAction("Index", "Home");
             }
-            if (id == null)
+            if (model.ID == 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(model);
             }
-            TempData["StudentID"] = id;
-            Student student = db.Students.Find(id);
+            TempData["StudentID"] = model.ID;
+            Student student = db.Students.Find(model.ID);
             if (student == null)
             {
                 return HttpNotFound();
             }
             List<Course> listCourses = db.Courses.OrderBy(c => c.Title).ToList();
             ViewBag.listCourses = listCourses;
-            return View(student);
+
+            model.EnrollmentDate = db.Students.Where(e => e.ID == model.ID).Select(e => e.EnrollmentDate).FirstOrDefault();
+            model.FirstMidName = db.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
+            model.LastName = db.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
+            model.ImagePath = db.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
+            model.Enrollments = db.Enrollments.Where(e => e.StudentID == model.ID).OrderBy(e => e.Course.Title).ToList();
+
+            return View(model);
 
         }
         [HttpPost]

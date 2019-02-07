@@ -32,6 +32,7 @@ namespace ContosoUniversity.Models
         [Required(ErrorMessage = "Password is Required")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
+        [DataType(DataType.Upload)]
+        public string ImagePath { get; set; }
     }
 }

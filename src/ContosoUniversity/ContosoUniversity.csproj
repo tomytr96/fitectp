@@ -193,9 +193,9 @@
     <Compile Include="Migrations\201902061127114_ModificationControlleur.Designer.cs">
       <DependentUpon>201902061127114_ModificationControlleur.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201902061426471_suppressiondescommentaire.cs" />
-    <Compile Include="Migrations\201902061426471_suppressiondescommentaire.Designer.cs">
-      <DependentUpon>201902061426471_suppressiondescommentaire.cs</DependentUpon>
+    <Compile Include="Migrations\201902061551295_AjoutViewModelPerson.cs" />
+    <Compile Include="Migrations\201902061551295_AjoutViewModelPerson.Designer.cs">
+      <DependentUpon>201902061551295_AjoutViewModelPerson.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201902071344213_AjoutdeAPIEtudient.cs" />
     <Compile Include="Migrations\201902071344213_AjoutdeAPIEtudient.Designer.cs">
@@ -213,6 +213,9 @@
     <Compile Include="ViewModels\AssignedCourseData.cs" />
     <Compile Include="ViewModels\EnrollmentDateGroup.cs" />
     <Compile Include="ViewModels\InstructorIndexData.cs" />
+    <Compile Include="ViewModels\InstructorVM.cs" />
+    <Compile Include="ViewModels\PersonVM.cs" />
+    <Compile Include="ViewModels\StudentVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -282,6 +285,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Image\" />
+    <Folder Include="Services\" />
+    <Folder Include="Views\ProfilePicturePersonData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -318,8 +324,8 @@
     <EmbeddedResource Include="Migrations\201902061127114_ModificationControlleur.resx">
       <DependentUpon>201902061127114_ModificationControlleur.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902061426471_suppressiondescommentaire.resx">
-      <DependentUpon>201902061426471_suppressiondescommentaire.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902061551295_AjoutViewModelPerson.resx">
+      <DependentUpon>201902061551295_AjoutViewModelPerson.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902071344213_AjoutdeAPIEtudient.resx">
       <DependentUpon>201902071344213_AjoutdeAPIEtudient.cs</DependentUpon>

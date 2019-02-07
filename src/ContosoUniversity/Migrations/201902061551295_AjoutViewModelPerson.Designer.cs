@@ -7,13 +7,13 @@ namespace ContosoUniversity.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class suppressiondescommentaire : IMigrationMetadata
+    public sealed partial class AjoutViewModelPerson : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(suppressiondescommentaire));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AjoutViewModelPerson));
         
         string IMigrationMetadata.Id
         {
-            get { return "201902061426471_suppressiondescommentaire"; }
+            get { return "201902061551295_AjoutViewModelPerson"; }
         }
         
         string IMigrationMetadata.Source

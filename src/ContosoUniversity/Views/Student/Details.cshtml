@@ -1,10 +1,11 @@
-﻿@model ContosoUniversity.Models.Student
+﻿@model ContosoUniversity.ViewModels.StudentVM
 
 @{
     ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
+<img src="@Model.ImagePath" alt="Alternate Text" class="pull-right" width="100" />
 
 <div>
     <h4>Student</h4>
@@ -55,19 +56,10 @@
                 }
             </table>
             <p>Register to a new course : </p>
-            @*@using (Html.BeginForm("Details","Student", FormMethod.Get))
-            {
-            <p>
-                Department : @Html.DropDownList("SelectedDepartment", (IEnumerable<SelectListItem>)ViewBag.SelectedDepartment)
-                <input type="submit" value="Filter" />
-            </p>
-            <br />
-            }*@
-
             @using (Html.BeginForm("Details", "Student", FormMethod.Post))
             {
                 <p>
-                    Course : @Html.DropDownList("listCourses", new SelectList(ViewBag.ListCourses, "CourseID","Title"))
+                    Course : @Html.DropDownList("listCourses", new SelectList(ViewBag.ListCourses, "CourseID", "Title"))
                     <input type="submit" value="Register" />
                 </p>
                 <p class="text-danger">@TempData["ErrorMessage"]</p>
