@@ -1,7 +1,9 @@
 ﻿using ContosoUniversity.DAL;
 using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,13 +11,13 @@ using System.Web.Security;
 
 namespace ContosoUniversity.Controllers
 {
-    
+
     public class AccountController : Controller
     {
         // GET: Account
         public ActionResult Index()
         {
-            
+
             return View();
 
         }
@@ -25,62 +27,65 @@ namespace ContosoUniversity.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Register(string FirstMidName, string LastName, string Role, string Username, string Password, string ConfirmPassword)
+        public ActionResult Register(PersonVM model)
         {
-            //if (ModelState.IsValid)
-            if (Password == ConfirmPassword)
+            if (model.Password == model.ConfirmPassword)
             {
-
+                string fileName = model.FullName;
+                string extension = Path.GetExtension(model.ImageFile.FileName);
+                fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                model.ImagePath = "~/Image/" + fileName;
+                fileName = Path.Combine(Server.MapPath("~/Image/"), fileName);
+                model.ImageFile.SaveAs(fileName);
                 using (SchoolContext db = new SchoolContext())
                 {
 
-                    if (!db.People.Any(u => u.Username == Username) && Role == "Student")
+                    if (!db.People.Any(u => u.Username == model.Username) && model.Role == "Student")
                     {
-                        Student user = new Student();
-                        user.FirstMidName = FirstMidName;
-                        user.LastName = LastName;
-                        user.Username = Username;
-                        user.Password = Password;
-                        user.EnrollmentDate = DateTime.Now;
+                        Student user = new Student
+                        {
+                            FirstMidName = model.FirstMidName,
+                            LastName = model.LastName,
+                            Username = model.Username,
+                            Password = model.Password,
+                            EnrollmentDate = DateTime.Now,
+                            ImagePath = model.ImagePath
+                        };
                         db.Students.Add(user);
                         db.SaveChanges();
-                        ViewBag.Message = "Welcome " + Username;
+                        ViewBag.Message = "Welcome " + user.Username;
                         return RedirectToAction("Login");
 
                     }
-                    else if (!db.People.Any(u => u.Username == Username) && Role == "Instructor")
+                    else if (!db.People.Any(u => u.Username == model.Username) && model.Role == "Instructor")
                     {
                         {
-                            Instructor user = new Instructor();
-                            user.FirstMidName = FirstMidName;
-                            user.LastName = LastName;
-                            user.Username = Username;
-                            user.Password = Password;
-                            user.HireDate = DateTime.Now;
+                            Instructor user = new Instructor
+                            {
+                                FirstMidName = model.FirstMidName,
+                                LastName = model.LastName,
+                                Username = model.Username,
+                                Password = model.Password,
+                                HireDate = DateTime.Now
+                            };
                             db.Instructors.Add(user);
                             db.SaveChanges();
-                            ViewBag.Message = "Welcome " + Username;
+                            ViewBag.Message = "Welcome " + user.Username;
                             return RedirectToAction("Login");
                         }
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Username already exists";
+                        ViewBag.ErrorMessage = "Username already exists";
                         return View();
                     }
-
-
-
-
                 }
-
-
             }
             TempData["ErrorMessage"] = "Password Not Valid";
             return View();
         }
+
         //Login
-      
         public ActionResult Login()
         {
             return View();
@@ -120,12 +125,12 @@ namespace ContosoUniversity.Controllers
             return View();
 
         }
-  
+
         public ActionResult Logout()
         {
             if (Session["UserID"] != null)
             {
-                
+
                 FormsAuthentication.SignOut();
             }
 

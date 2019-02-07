@@ -1,4 +1,4 @@
-﻿@model ContosoUniversity.Models.Student
+﻿@model ContosoUniversity.ViewModels.StudentVM
 
 @{
     ViewBag.Title = "Details";
@@ -55,15 +55,6 @@
                 }
             </table>
             <p>Register to a new course : </p>
-            @*@using (Html.BeginForm("Details","Student", FormMethod.Get))
-            {
-            <p>
-                Department : @Html.DropDownList("SelectedDepartment", (IEnumerable<SelectListItem>)ViewBag.SelectedDepartment)
-                <input type="submit" value="Filter" />
-            </p>
-            <br />
-            }*@
-
             @using (Html.BeginForm("Details", "Student", FormMethod.Post))
             {
                 <p>
@@ -76,6 +67,7 @@
 
         </dd>
     </dl>
+    <img src="@Model.ImagePath" alt="Alternate Text" width="400"/>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
