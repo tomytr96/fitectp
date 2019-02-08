@@ -29,7 +29,7 @@ namespace ContosoUniversity.Controllers
         }
         public ActionResult Register()
         {
-            TempData["ErrorMessage"] = "";
+
             return View();
         }
 
@@ -37,14 +37,30 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         public ActionResult Register(PersonVM model)
         {
+            //FileInfo fileInfo = new FileInfo(model.ImageFile.FileName);
             if (model.Password == model.ConfirmPassword)
             {
                 string fileName = model.FirstMidName + model.LastName.ToUpper();
                 string extension = Path.GetExtension(model.ImageFile.FileName);
-                fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                model.ImagePath = "/Image/" + fileName;
-                fileName = Path.Combine(Server.MapPath("/Image/"), fileName);
-                model.ImageFile.SaveAs(fileName);
+
+                if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
+                {
+                    TempData["ImageMessage"] = "Authorized extension are JPG, JPEG and PNG";
+                    return View(model);
+                }
+                //else if (fileInfo.Length > 100)
+                //{
+                //    TempData["ImageMessage"] = "Maximum size is 100 KB";
+                //    return View(model);
+                //}
+                else
+                {
+                    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                    model.ImagePath = "/Image/" + fileName;
+                    fileName = Path.Combine(Server.MapPath("/Image/"), fileName);
+                    
+                }
+
                 using (SchoolContext db = new SchoolContext())
                 {
 
@@ -61,6 +77,7 @@ namespace ContosoUniversity.Controllers
                         };
                         db.Students.Add(user);
                         db.SaveChanges();
+                        model.ImageFile.SaveAs(fileName);
                         ViewBag.Message = "Welcome " + user.Username;
                         return RedirectToAction("Login");
 
@@ -79,22 +96,24 @@ namespace ContosoUniversity.Controllers
                             };
                             db.Instructors.Add(user);
                             db.SaveChanges();
+                            model.ImageFile.SaveAs(fileName);
                             ViewBag.Message = "Welcome " + user.Username;
                             return RedirectToAction("Login");
                         }
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Username already exists";
+                        TempData["UsernameMessage"] = "Username already exists";
                         return View();
                     }
                 }
             }
-            TempData["ErrorMessage"] = "Password Not Valid";
+            TempData["PasswordMessage"] = "Password Not Conform";
             return View();
         }
 
         //Login
+
         public ActionResult Login()
         {
             return View();
@@ -126,7 +145,7 @@ namespace ContosoUniversity.Controllers
                     return RedirectToAction("Index", "Instructor");
 
                 }
-                else { ModelState.AddModelError("", "Username or Password is wrong"); }
+                else { TempData["ErrorLoginMessage"] = "Username or Password is wrong"; }
 
 
 
@@ -143,6 +162,9 @@ namespace ContosoUniversity.Controllers
                 FormsAuthentication.SignOut();
             }
 
+            //    FormsAuthentication.SignOut();
+            //}
+            Session["UserID"] = null;
 
             return RedirectToAction("Index", "Home");
         }

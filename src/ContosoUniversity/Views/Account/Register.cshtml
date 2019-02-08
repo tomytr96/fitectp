@@ -40,6 +40,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                <span class="text-danger">@TempData["UsernameMessage"]</span>
             </div>
         </div>
 
@@ -54,7 +55,8 @@
         <div class="form-group">
             <label class="control-label col-md-2" for="ConfirmPassword">ConfirmPassword</label>
             <div class="col-md-10">
-                <input class="form-control text-box single-line" data-val="true" data-val-required="ConfirmPassword is required" id="ConfirmPassword" name="ConfirmPassword" type="password" />
+                <input class="form-control text-box single-line" data-val="true" data-val-required="ConfirmPassword is required" ErrorMessage="Password not valid" id="ConfirmPassword" name="ConfirmPassword" type="password" />
+                <span class="text-danger">@TempData["PasswordMessage"]</span>
             </div>
         </div>
 
@@ -72,10 +74,10 @@
             <label class="control-label col-md-2" for="ImageFile">Profile picture</label>
             <div class="col-md-10">
                 <input type="file" name="ImageFile" />
+                <span class="text-danger">@TempData["ImageMessage"]</span>
             </div>
         </div>
-
-
+     
     </div>
 
     <div class="form-group">
