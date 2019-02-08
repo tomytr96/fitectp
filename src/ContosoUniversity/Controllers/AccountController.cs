@@ -14,6 +14,12 @@ namespace ContosoUniversity.Controllers
 
     public class AccountController : Controller
     {
+        private SchoolContext db = new SchoolContext();
+        public SchoolContext DbContext
+        {
+            get { return db; }
+            set { db = value; }
+        }
         // GET: Account
         public ActionResult Index()
         {
@@ -26,6 +32,8 @@ namespace ContosoUniversity.Controllers
             TempData["ErrorMessage"] = "";
             return View();
         }
+
+
         [HttpPost]
         public ActionResult Register(PersonVM model)
         {

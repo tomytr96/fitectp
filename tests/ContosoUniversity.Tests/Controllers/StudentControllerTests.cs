@@ -26,36 +26,36 @@ namespace ContosoUniversity.Tests.Controllers
             controllerToTest.DbContext = dbContext;
         }
 
-        [Test]
-        public void GetDetails_ValidStudent_Success()
-        {
-            string expectedLastName = "Dubois";
-            string expectedFirstName = "George";
+        //[Test]
+        //public void GetDetails_ValidStudent_Success()
+        //{
+        //    string expectedLastName = "Dubois";
+        //    string expectedFirstName = "George";
 
-            EntityGenerator generator = new EntityGenerator(dbContext);
-            Student student = generator.CreateStudent(expectedLastName, expectedFirstName);
-            //SECOND PARAMETRE A REMPLACER
-            var result = controllerToTest.Details(student.ID, 1) as ViewResult;
+        //    EntityGenerator generator = new EntityGenerator(dbContext);
+        //    Student student = generator.CreateStudent(expectedLastName, expectedFirstName);
+        //    //SECOND PARAMETRE A REMPLACER
+        //    var result = controllerToTest.Details(student.ID, 1) as ViewResult;
 
-            var resultModel = result.Model as Student;
+        //    var resultModel = result.Model as Student;
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(resultModel, Is.Not.Null);
-            Assert.That(expectedLastName, Is.EqualTo(resultModel.LastName));
-            Assert.That(expectedFirstName, Is.EqualTo(resultModel.FirstMidName));
-        }
+        //    Assert.That(result, Is.Not.Null);
+        //    Assert.That(resultModel, Is.Not.Null);
+        //    Assert.That(expectedLastName, Is.EqualTo(resultModel.LastName));
+        //    Assert.That(expectedFirstName, Is.EqualTo(resultModel.FirstMidName));
+        //}
 
-        [Test]
-        public void GetDetails_InvalidStudent_Fail404()
-        {
-            const int expectedStatusCode = 404;
-            const int invalidId = 99999999;
-            //SECOND PARAMETRE A REMPLACER
-            var result = controllerToTest.Details(invalidId,1) as HttpStatusCodeResult;
+        //[Test]
+        //public void GetDetails_InvalidStudent_Fail404()
+        //{
+        //    const int expectedStatusCode = 404;
+        //    const int invalidId = 99999999;
+        //    //SECOND PARAMETRE A REMPLACER
+        //    var result = controllerToTest.Details(invalidId,1) as HttpStatusCodeResult;
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(expectedStatusCode, Is.EqualTo(result.StatusCode));
-        }
+        //    Assert.That(result, Is.Not.Null);
+        //    Assert.That(expectedStatusCode, Is.EqualTo(result.StatusCode));
+        //}
 
         [Test]
         public void Edit_ValidStudentData_Success()
