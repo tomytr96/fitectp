@@ -12,7 +12,7 @@ using System.Web.Routing;
 
 namespace ContosoUniversity.Tests.Controllers
 {
-    public class AccountControllerTests : IntegrationTestsBase
+    public class HomeControllerTests : IntegrationTestsBase
     {
         private MockHttpContextWrapper httpContext;
         private AccountController controllerToTest;

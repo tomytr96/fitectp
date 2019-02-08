@@ -62,6 +62,7 @@
             {
                 <p>
                     Course : @Html.DropDownList("listCourses", new SelectList(ViewBag.ListCourses, "CourseID", "Title"))
+                    
                     <input type="submit" value="Register" />
                 </p>
                 <p class="text-danger">@TempData["ErrorMessage"]</p>

@@ -80,21 +80,22 @@ namespace ContosoUniversity.Controllers
         // GET: Student/Details/5
         public ActionResult Details(StudentVM model)
         {
-            if (Session["UserID"] == null)
+            if (Session["UserID"] == null)// Remplaçable par filtres prédéfinis d'authentification ou personnalisés
             {
-
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");//TO DO: Factoriser pour éviter la redondance d'utilisation
             }
             if (model.ID == 0)
             {
                 return View(model);
             }
-            TempData["StudentID"] = model.ID;
+            TempData["StudentID"] = model.ID;//TO DO: Remplacer par l'ID de la personne connecté via 'Session["UserID"]'
+
             Student student = db.Students.Find(model.ID);
             if (student == null)
             {
                 return HttpNotFound();
             }
+            //
             List<Course> listCourses = db.Courses.OrderBy(c => c.Title).ToList();
             ViewBag.listCourses = listCourses;
 
@@ -108,7 +109,7 @@ namespace ContosoUniversity.Controllers
 
         }
         [HttpPost]
-        public ActionResult Details(String listCourses)
+        public ActionResult Details(string listCourses)
         {
             if (Session["UserID"] == null)
             {
@@ -117,15 +118,16 @@ namespace ContosoUniversity.Controllers
             }
             if (ModelState.IsValid)
             {
-                int studentID = int.Parse(TempData["StudentID"].ToString());
                 int courseID = int.Parse(listCourses);
-
+                int studentID = int.Parse(TempData["StudentID"].ToString());
+                
                 if (!(db.Enrollments.Where(o => o.Student.ID == studentID && o.CourseID == courseID).Any()))
                 {
                     Enrollment nouveauCours = new Enrollment
                     {
-                        CourseID = int.Parse(listCourses),
-                        StudentID = int.Parse(TempData["StudentID"].ToString())
+                        CourseID = courseID,
+                        StudentID = studentID,
+                        
                     };
                     db.Enrollments.Add(nouveauCours);
                     db.SaveChanges();

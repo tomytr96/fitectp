@@ -19,7 +19,7 @@ namespace ContosoUniversity
             GlobalConfiguration.Configuration.Formatters.Add(new JsonMediaTypeFormatter());
             
             //in case to retrun xml
-           // GlobalConfiguration.Configuration.Formatters.Add(new XmlMediaTypeFormatter());
+            //GlobalConfiguration.Configuration.Formatters.Add(new XmlMediaTypeFormatter());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
