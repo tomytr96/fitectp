@@ -40,25 +40,33 @@ namespace ContosoUniversity.Controllers
             //FileInfo fileInfo = new FileInfo(model.ImageFile.FileName);
             if (model.Password == model.ConfirmPassword)
             {
-                string fileName = model.FirstMidName + model.LastName.ToUpper();
-                string extension = Path.GetExtension(model.ImageFile.FileName);
+                bool boolImage = false;
+                string fileName = "";
+                string extension = "";
 
-                if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
+                if (model.ImageFile != null)
                 {
-                    TempData["ImageMessage"] = "Authorized extension are JPG, JPEG and PNG";
-                    return View(model);
-                }
-                //else if (fileInfo.Length > 100)
-                //{
-                //    TempData["ImageMessage"] = "Maximum size is 100 KB";
-                //    return View(model);
-                //}
-                else
-                {
-                    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                    model.ImagePath = "/Image/" + fileName;
-                    fileName = Path.Combine(Server.MapPath("/Image/"), fileName);
-                    
+                    boolImage = true;
+                    fileName = model.FirstMidName + model.LastName.ToUpper();
+                    extension = Path.GetExtension(model.ImageFile.FileName);
+
+                    if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
+                    {
+                        TempData["ImageMessage"] = "Authorized extension are JPG, JPEG and PNG";
+                        return View(model);
+                    }
+                    else if (model.ImageFile.ContentLength > 100000)
+                    {
+                        TempData["ImageMessage"] = "Maximum size is 100 KB";
+                        return View(model);
+                    }
+                    else
+                    {
+                        fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        model.ImagePath = "/Image/" + fileName;
+                        fileName = Path.Combine(Server.MapPath("/Image/"), fileName);
+
+                    }
                 }
 
                 using (SchoolContext db = new SchoolContext())
@@ -77,7 +85,10 @@ namespace ContosoUniversity.Controllers
                         };
                         db.Students.Add(user);
                         db.SaveChanges();
-                        model.ImageFile.SaveAs(fileName);
+                        if (boolImage == true)
+                        {
+                            model.ImageFile.SaveAs(fileName);
+                        }
                         ViewBag.Message = "Welcome " + user.Username;
                         return RedirectToAction("Login");
 
@@ -96,7 +107,10 @@ namespace ContosoUniversity.Controllers
                             };
                             db.Instructors.Add(user);
                             db.SaveChanges();
-                            model.ImageFile.SaveAs(fileName);
+                            if (boolImage == true)
+                            {
+                                model.ImageFile.SaveAs(fileName);
+                            }
                             ViewBag.Message = "Welcome " + user.Username;
                             return RedirectToAction("Login");
                         }

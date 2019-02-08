@@ -5,8 +5,10 @@
 }
 
 <h2>Details</h2>
-<img src="@Model.ImagePath" alt="Alternate Text" class="pull-right" width="100" />
-
+@if (Model.ImagePath != null)
+{
+    <img src="@Model.ImagePath" class="pull-right" width="100" />
+}
 <div>
     <h4>Student</h4>
     <hr />

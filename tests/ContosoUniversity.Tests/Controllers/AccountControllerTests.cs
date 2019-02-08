@@ -25,7 +25,6 @@ namespace ContosoUniversity.Tests.Controllers
             Username = "tomyTRIMOREAU",
             Password = "123",
             ConfirmPassword = "123",
-            ImageFile
             ImagePath = "/Image/TomyTRIMOREAU191943976.png"
         };
 
