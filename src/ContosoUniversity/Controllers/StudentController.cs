@@ -24,7 +24,6 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Student
-
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)//TODO : Remplacer les paramètres par un ViewModel
         {
 
@@ -76,44 +75,43 @@ namespace ContosoUniversity.Controllers
             return View(students.ToPagedList(pageNumber, pageSize));
         }
 
-
         // GET: Student/Details/5
         public ActionResult Details(StudentVM model)
         {
-            if (Session["UserID"] == null)// Remplaçable par filtres prédéfinis d'authentification ou personnalisés
-            {
-                return RedirectToAction("Index", "Home");//TO DO: Factoriser pour éviter la redondance d'utilisation
-            }
-            if (model.ID == 0)
-            {
-                return View(model);
-            }
-            TempData["StudentID"] = model.ID;//TO DO: Remplacer par l'ID de la personne connecté via 'Session["UserID"]'
+            TempData["StudentID"] = model.ID; //TO DO: Remplacer par l'ID de la personne connecté via 'Session["UserID"]'
 
             Student student = db.Students.Find(model.ID);
-            if (student == null)
+
+            //TO DO: Factoriser pour éviter la redondance d'utilisation
+            if (Session["UserID"] == null) // Remplaçable par des filtres prédéfinis d'authentification ou personnalisés
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home"); 
             }
-            //
-            List<Course> listCourses = db.Courses.OrderBy(c => c.Title).ToList();
-            ViewBag.listCourses = listCourses;
 
-            model.EnrollmentDate = db.Students.Where(e => e.ID == model.ID).Select(e => e.EnrollmentDate).FirstOrDefault();
-            model.FirstMidName = db.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
-            model.LastName = db.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
-            model.ImagePath = db.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
-            model.Enrollments = db.Enrollments.Where(e => e.StudentID == model.ID).OrderBy(e => e.Course.Title).ToList();
+            if (student != null)
+            {
+                List<Course> listCourses = db.Courses.OrderBy(c => c.Title).ToList();
+                ViewBag.listCourses = listCourses;
 
-            return View(model);
+                return View(student);
 
+                #region FirstVersion -- Renvoyer un VM à la vue
+
+                //model.EnrollmentDate = db.Students.Where(e => e.ID == model.ID).Select(e => e.EnrollmentDate).FirstOrDefault();
+                //model.FirstMidName = db.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
+                //model.LastName = db.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
+                //model.ImagePath = db.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
+                //model.Enrollments = db.Enrollments.Where(e => e.StudentID == model.ID).OrderBy(e => e.Course.Title).ToList
+                #endregion
+            }
+            return HttpNotFound();
         }
+
         [HttpPost]
         public ActionResult Details(string listCourses)
         {
             if (Session["UserID"] == null)
             {
-
                 return RedirectToAction("Index", "Home");
             }
             if (ModelState.IsValid)
