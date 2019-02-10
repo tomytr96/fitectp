@@ -37,7 +37,6 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         public ActionResult Register(PersonVM model)
         {
-            //FileInfo fileInfo = new FileInfo(model.ImageFile.FileName);
             if (model.Password == model.ConfirmPassword)
             {
                 bool boolImage = false;
@@ -65,7 +64,6 @@ namespace ContosoUniversity.Controllers
                         fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
                         model.ImagePath = "/Image/" + fileName;
                         fileName = Path.Combine(Server.MapPath("/Image/"), fileName);
-
                     }
                 }
 
@@ -80,6 +78,7 @@ namespace ContosoUniversity.Controllers
                             LastName = model.LastName,
                             Username = model.Username,
                             Password = model.Password,
+                            Email = model.Email,
                             EnrollmentDate = DateTime.Now,
                             ImagePath = model.ImagePath
                         };

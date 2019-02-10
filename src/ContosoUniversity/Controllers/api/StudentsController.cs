@@ -17,14 +17,9 @@ namespace ContosoUniversity.Controllers.api
     {
         private SchoolContext db = new SchoolContext();
 
-        // GET: api/Students
-        //public IQueryable<Student> GetPeople()
-        //{
-        //    return db.Students;
-        //}
-
         // GET: api/Students/5
 
+            //                              APIVM
         public IHttpActionResult GetStudent(int id)
         {
             Student student = db.Students.Find(id);
@@ -32,6 +27,16 @@ namespace ContosoUniversity.Controllers.api
             {
                 return NotFound();
             }
+
+            // TODO : Passer une liste d'objets et non une chaine de caractères
+
+            //APIViewModel api = new APIViewModel(){
+            //id=student.ID,
+            //lastname= student.Lastname,
+            //firstname = student.FirstMidName,
+            //enrollementDate = student.EnrollmentDate,
+            //enrollements = courseIDVM.CoursID
+            //}
 
             Dictionary<string, object>DetailsStudent = new Dictionary<string, object>();
 
@@ -43,18 +48,14 @@ namespace ContosoUniversity.Controllers.api
             DetailsStudent.Add("enrollementDate", student.EnrollmentDate);
             DetailsStudent.Add("enrollements",CoursIDList);
 
-           
             foreach ( var item in student.Enrollments)
             {
-               
-                CoursIDList.Add("CoursID: "+item.CourseID.ToString());
-               
+                //TODO : Ne pas mettre les ':' car le serializer s'en onccupera si l'on a bien une liste d'objet
+                CoursIDList.Add("CoursID : "+item.CourseID.ToString()); 
             }
 
             return Ok(DetailsStudent);
-
-
-
+                      
         }
 
         protected override void Dispose(bool disposing)

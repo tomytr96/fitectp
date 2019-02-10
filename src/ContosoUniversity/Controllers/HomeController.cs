@@ -16,7 +16,9 @@ namespace ContosoUniversity.Controllers
      
         public ActionResult Index()
         {
-            
+            //TODO : Afficher la liste des cours et des instructeurs de l'université
+            //      Une fois l'agenda créé  (US8)
+
             return View();
         }
 

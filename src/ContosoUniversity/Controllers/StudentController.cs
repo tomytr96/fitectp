@@ -19,7 +19,6 @@ namespace ContosoUniversity.Controllers
         public SchoolContext DB { get; set; } = new SchoolContext();
 
         // GET: Student
-
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)//TODO : Remplacer les paramètres par un ViewModel
         {
 
@@ -71,56 +70,57 @@ namespace ContosoUniversity.Controllers
             return View(students.ToPagedList(pageNumber, pageSize));
         }
 
-
         // GET: Student/Details/5
         public ActionResult Details(StudentVM model)
         {
-            if (Session["UserID"] == null)
+            TempData["StudentID"] = model.ID; //TO DO: Remplacer par l'ID de la personne connecté via 'Session["UserID"]'
+
+            Student student = db.Students.Find(model.ID);
+
+            //TO DO: Factoriser pour éviter la redondance d'utilisation
+            if (Session["UserID"] == null) // Remplaçable par des filtres prédéfinis d'authentification ou personnalisés
             {
-
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home"); 
             }
-            if (model.ID == 0)
+
+            if (student != null)
             {
-                return View(model);
+                List<Course> listCourses = db.Courses.OrderBy(c => c.Title).ToList();
+                ViewBag.listCourses = listCourses;
+
+                return View(student);
+
+                #region FirstVersion -- Renvoyer un VM à la vue
+
+                //model.EnrollmentDate = db.Students.Where(e => e.ID == model.ID).Select(e => e.EnrollmentDate).FirstOrDefault();
+                //model.FirstMidName = db.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
+                //model.LastName = db.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
+                //model.ImagePath = db.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
+                //model.Enrollments = db.Enrollments.Where(e => e.StudentID == model.ID).OrderBy(e => e.Course.Title).ToList
+                #endregion
             }
-            TempData["StudentID"] = model.ID;
-            Student student = DB.Students.Find(model.ID);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            List<Course> listCourses = DB.Courses.OrderBy(c => c.Title).ToList();
-            ViewBag.listCourses = listCourses;
-
-            model.EnrollmentDate = DB.Students.Where(e => e.ID == model.ID).Select(e => e.EnrollmentDate).FirstOrDefault();
-            model.FirstMidName = DB.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
-            model.LastName = DB.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
-            model.ImagePath = DB.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
-            model.Enrollments = DB.Enrollments.Where(e => e.StudentID == model.ID).OrderBy(e => e.Course.Title).ToList();
-
-            return View(model);
-
+            return HttpNotFound();
         }
+
         [HttpPost]
-        public ActionResult Details(String listCourses)
+        public ActionResult Details(string listCourses)
         {
             if (Session["UserID"] == null)
             {
-
                 return RedirectToAction("Index", "Home");
             }
             if (ModelState.IsValid)
             {
-                int studentID = int.Parse(TempData["StudentID"].ToString());
                 int courseID = int.Parse(listCourses);
-
-                if (!(DB.Enrollments.Where(o => o.Student.ID == studentID && o.CourseID == courseID).Any()))
+                int studentID = int.Parse(TempData["StudentID"].ToString());
+                
+                if (!(db.Enrollments.Where(o => o.Student.ID == studentID && o.CourseID == courseID).Any()))
                 {
                     Enrollment nouveauCours = new Enrollment
                     {
-                        CourseID = int.Parse(listCourses),
-                        StudentID = int.Parse(TempData["StudentID"].ToString())
+                        CourseID = courseID,
+                        StudentID = studentID,
+                        
                     };
                     DB.Enrollments.Add(nouveauCours);
                     DB.SaveChanges();
