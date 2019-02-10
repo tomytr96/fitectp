@@ -16,12 +16,7 @@ namespace ContosoUniversity.Controllers
     
     public class StudentController : Controller
     {
-        private SchoolContext db = new SchoolContext();
-        public SchoolContext DbContext
-        {
-            get { return db; }
-            set { db = value; }
-        }
+        public SchoolContext DB { get; set; } = new SchoolContext();
 
         // GET: Student
 
@@ -48,7 +43,7 @@ namespace ContosoUniversity.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var students = from s in db.Students
+            var students = from s in DB.Students
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -90,19 +85,19 @@ namespace ContosoUniversity.Controllers
                 return View(model);
             }
             TempData["StudentID"] = model.ID;
-            Student student = db.Students.Find(model.ID);
+            Student student = DB.Students.Find(model.ID);
             if (student == null)
             {
                 return HttpNotFound();
             }
-            List<Course> listCourses = db.Courses.OrderBy(c => c.Title).ToList();
+            List<Course> listCourses = DB.Courses.OrderBy(c => c.Title).ToList();
             ViewBag.listCourses = listCourses;
 
-            model.EnrollmentDate = db.Students.Where(e => e.ID == model.ID).Select(e => e.EnrollmentDate).FirstOrDefault();
-            model.FirstMidName = db.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
-            model.LastName = db.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
-            model.ImagePath = db.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
-            model.Enrollments = db.Enrollments.Where(e => e.StudentID == model.ID).OrderBy(e => e.Course.Title).ToList();
+            model.EnrollmentDate = DB.Students.Where(e => e.ID == model.ID).Select(e => e.EnrollmentDate).FirstOrDefault();
+            model.FirstMidName = DB.People.Where(e => e.ID == model.ID).Select(e => e.FirstMidName).FirstOrDefault();
+            model.LastName = DB.People.Where(e => e.ID == model.ID).Select(e => e.LastName).FirstOrDefault();
+            model.ImagePath = DB.People.Where(e => e.ID == model.ID).Select(e => e.ImagePath).FirstOrDefault(); ;
+            model.Enrollments = DB.Enrollments.Where(e => e.StudentID == model.ID).OrderBy(e => e.Course.Title).ToList();
 
             return View(model);
 
@@ -120,15 +115,15 @@ namespace ContosoUniversity.Controllers
                 int studentID = int.Parse(TempData["StudentID"].ToString());
                 int courseID = int.Parse(listCourses);
 
-                if (!(db.Enrollments.Where(o => o.Student.ID == studentID && o.CourseID == courseID).Any()))
+                if (!(DB.Enrollments.Where(o => o.Student.ID == studentID && o.CourseID == courseID).Any()))
                 {
                     Enrollment nouveauCours = new Enrollment
                     {
                         CourseID = int.Parse(listCourses),
                         StudentID = int.Parse(TempData["StudentID"].ToString())
                     };
-                    db.Enrollments.Add(nouveauCours);
-                    db.SaveChanges();
+                    DB.Enrollments.Add(nouveauCours);
+                    DB.SaveChanges();
                     return RedirectToAction("Details", new { id = TempData["StudentID"] });
                 }
                 else
@@ -140,7 +135,7 @@ namespace ContosoUniversity.Controllers
 
             else
             {
-                Student student = db.Students.Find(TempData["StudentID"]);
+                Student student = DB.Students.Find(TempData["StudentID"]);
                 if (student == null)
                 {
                     return HttpNotFound();
@@ -168,8 +163,8 @@ namespace ContosoUniversity.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Students.Add(student);
-                    db.SaveChanges();
+                    DB.Students.Add(student);
+                    DB.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
@@ -194,7 +189,7 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = DB.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -218,13 +213,13 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var studentToUpdate = db.Students.Find(id);
+            var studentToUpdate = DB.Students.Find(id);
             if (TryUpdateModel(studentToUpdate, "",
                new string[] { "LastName", "FirstMidName", "EnrollmentDate" }))
             {
                 try
                 {
-                    db.SaveChanges();
+                    DB.SaveChanges();
 
                     return RedirectToAction("Index");
                 }
@@ -252,7 +247,7 @@ namespace ContosoUniversity.Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
-            Student student = db.Students.Find(id);
+            Student student = DB.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -267,9 +262,9 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
-                Student student = db.Students.Find(id);
-                db.Students.Remove(student);
-                db.SaveChanges();
+                Student student = DB.Students.Find(id);
+                DB.Students.Remove(student);
+                DB.SaveChanges();
             }
             catch (RetryLimitExceededException/* dex */)
             {
@@ -282,7 +277,7 @@ namespace ContosoUniversity.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                DB.Dispose();
             }
             base.Dispose(disposing);
         }
