@@ -169,12 +169,7 @@ namespace ContosoUniversity.Controllers
 
         public ActionResult Logout()
         {
-            //if (Session["UserID"] != null)
-            //{
-
-            //    FormsAuthentication.SignOut();
-            //}
-            
+           
             Session["UserID"] = null;
 
             return RedirectToAction("Index", "Home");
